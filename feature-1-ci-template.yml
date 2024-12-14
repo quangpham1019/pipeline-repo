@@ -1,4 +1,12 @@
 
+resources:
+  pipelines:
+    - pipeline: feature_ci
+      source: quangpham1019.pipeline-experiment (5)
+      trigger:
+        branches:
+          - feature-1
+
 extends:
   template: general-pipeline-template.yml
   parameters:
