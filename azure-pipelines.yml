@@ -3,13 +3,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-
-resources:
-  repositories:
-    - repository: pipeline_templates
-      endpoint: quangpham1019
-      type: github
-      name: quangpham1019/pipeline-experiment
   
 trigger:
 - main
@@ -17,6 +10,13 @@ trigger:
 pool:
   name: 'TestAgent'
 
+resources:
+  repositories:
+    - repository: pipeline_templates
+      endpoint: quangpham1019 (2)
+      type: github
+      name: quangpham1019/pipeline-experiment
+
 steps:
-- checkout: pipeline_templates
-- template: azure-pipelines.yml@pipeline_templates
+- script: echo Trying to parse template from another repo
+# - template: azure-pipelines.yml@pipeline_templates
