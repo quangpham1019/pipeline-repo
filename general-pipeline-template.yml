@@ -42,7 +42,7 @@ stages:
     jobs:
       - job: running_centralized_cd_pipeline
         steps:
-          - ${{ each step in parameters.ciSteps }}:
+          - ${{ each step in parameters.cdSteps }}:
               - ${{ each pair in step }}:
                   ${{ pair.key }}: ${{ pair.value }}
     # - stage: validate_entry_criteria
