@@ -1,0 +1,20 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: 'TestAgent'
+
+resources:
+  repositories:
+    - repository: pipeline_templates
+      type: github
+      name: quangpham1019/pipeline-experiment
+      
+  
+steps:
+- template: azure-pipelines.yml@pipeline_templates
