@@ -19,4 +19,4 @@ resources:
 
 steps:
 - script: echo Trying to parse template from another repo
-# - template: azure-pipelines.yml@pipeline_templates
+- template: common-pipeline-1.yml@pipeline_templates
