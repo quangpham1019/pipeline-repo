@@ -1,0 +1,162 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+parameters:
+  - name: ciSteps
+    type: stepList
+    default:
+      - script: echo Running default ci steps
+  - name: cdSteps
+    type: stepList
+    default:
+      - script: echo Running default cd steps
+
+stages:
+  - stage: prep
+    displayName: Get Commit Branch Info
+    jobs:
+      - job: get_commit_branch
+        steps:
+          - template: get-commit-branch-template.yml
+
+  - stage: feature_ci
+    displayName: Running CI for committing branch
+    jobs:
+      - job: running_ci
+        steps:
+          - ${{ each step in parameters.ciSteps }}:
+              - ${{ each pair in step }}:
+                  ${{ pair.key }}: ${{ pair.value }}
+
+  - stage: common_testing
+    displayName: Running common steps for either CI/CD
+    jobs:
+      - job: running_common_testing
+        steps:
+          - template: common-testing-template.yml
+
+  - stage: centralized_cd
+    displayName: Running Centralized CD pipeline
+    jobs:
+      - job: running_centralized_cd_pipeline
+        steps:
+          - ${{ each step in parameters.ciSteps }}:
+              - ${{ each pair in step }}:
+                  ${{ pair.key }}: ${{ pair.value }}
+    # - stage: validate_entry_criteria
+  #   displayName: Validate Entry Criteria
+  #   jobs:
+  #   - job: Do
+  #     steps:
+  #     - script: echo Validate Entry Criteria
+  #       displayName: Run a one-line script
+  # - stage: execute_build
+  #   displayName: Execute Build
+  #   jobs:
+  #   - job: Do
+  #     steps:
+  #     - script: echo Execute Build
+  #       displayName: Run a one-line script
+  # - stage: perform_unit_tests
+  #   displayName: Perform Unit Tests
+  #   jobs:
+  #   - job: Do
+  #     steps:
+  #     - script: echo Perform Unit Tests
+  #       displayName: Run a one-line script
+  # - stage: analyze_code
+  #   displayName: Analyze Code
+  #   jobs:
+  #   - job: Do
+  #     steps:
+  #     - script: echo Analyze Code
+  #       displayName: Run a one-line script
+  # - stage: package_artifact
+  #   displayName: Package Artifact
+  #   jobs:
+  #   - job: Do
+  #     steps:
+  #     - script: echo Package Artifact
+  #       displayName: Run a one-line script
+  # - stage: publish_artifact
+  #   displayName: Publish Artifact
+  #   jobs:
+  #   - job: Do
+  #     steps:
+  #     - script: echo Publish Artifact
+  #       displayName: Run a one-line script
+  - stage: provision_test_environment
+    condition: eq(variables['Build.SourceBranchName'], 'develop')
+    displayName: Provision Test Environment
+    jobs:
+      - job: Do
+        steps:
+          - script: echo Provision Test Environment
+            displayName: Run a one-line script
+# - stage: deploy_artifact_to_test
+#   displayName: Deploy Artifact To Test
+#   jobs:
+#   - job: Do
+#     steps:
+#     - script: echo Deploy Artifact To Test
+#       displayName: Run a one-line script
+# - stage: perform_test
+#   displayName: Perform Test
+#   jobs:
+#   - job: Do
+#     steps:
+#     - script: echo Perform Test
+#       displayName: Run a one-line script
+# - stage: validate_infrastructure_compliance
+#   displayName: Validate Infrastructure Compliance
+#   jobs:
+#   - job: Do
+#     steps:
+#     - script: echo Validate Infrastructure Compliance
+#       displayName: Run a one-line script
+# - stage: validate_exit_criteria
+#   displayName: Validate Exit Criteria
+#   jobs:
+#   - job: Do
+#     steps:
+#     - script: echo Validate Exit Criteria
+#       displayName: Run a one-line script
+# - stage: perform_dual_control
+#   displayName: Perform Dual Control
+#   jobs:
+#   - job: Do
+#     steps:
+#     - script: echo Perform Dual Control
+#       displayName: Run a one-line script
+# - stage: provision_production_environment
+#   displayName: Provision Production Environment
+#   jobs:
+#   - job: Do
+#     steps:
+#     - script: echo Provision Production Environment
+#       displayName: Run a one-line script
+# - stage: deploy_artifact_to_production
+#   displayName: Deploy Artifact to Production
+#   jobs:
+#   - job: Do
+#     steps:
+#     - script: echo Deploy Artifact to Production
+#       displayName: Run a one-line script
+# - stage: notify_actors
+#   displayName: Notify Actors
+#   jobs:
+#   - job: Do
+#     steps:
+#     - script: echo Notify Actors
+#       displayName: Run a one-line script
+
+# steps:
+# - script: echo Hello, world!
+#   displayName: Run a one-line script
+
+# - script: |
+#     echo Add other tasks to build, test, and deploy your project.
+#     echo See https://aka.ms/yaml
+#   displayName: Run a multi-line script

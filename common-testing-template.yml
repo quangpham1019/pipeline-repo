@@ -1,0 +1,4 @@
+
+steps:
+  - script: echo Running common testing
+  - script: echo Finishing common testing

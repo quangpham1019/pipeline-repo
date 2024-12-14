@@ -1,0 +1,5 @@
+
+steps:
+  - script: echo Getting source branch name
+  - script: echo $(Build.SourceBranchName)
+  - script: echo Assigning source branch name to variable
