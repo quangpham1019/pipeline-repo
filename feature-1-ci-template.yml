@@ -1,4 +1,9 @@
 
+trigger: none
+
+pool:
+  name: 'TestAgent'
+
 resources:
   pipelines:
     - pipeline: feature_ci
